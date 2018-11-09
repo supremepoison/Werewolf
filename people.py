@@ -52,46 +52,59 @@ class People():
     def HandleVote(self,result):
         global dictionary
         global VoteDict
-        VoteList = []
+        #为投票对象建立列表
+        VList = []
+        #将键值对翻转,显示有谁投了谁,建立的新字典
+        new_dict = {}
         
-        
-        
+        #v/n
         judge = result.split('_')[0]
+        #玩家
         who = result.split('_')[1]
+        #被投者
         state = result.split('_')[2]
 
+        #如果玩家选择投票
         if judge == 'v':
-
+            #将所有投票结果放入字典
             VoteDict[who] = state
 
+            #所有投票结束
             if len(VoteDict) == 3:
                 for k,v in VoteDict.items():
-                    if v not in VoteList:
-                        VoteList.append(v)
+                    #将键值对颠倒,键为被投人,值为投票者,并显示
+                    if v not in VList:
+                        VList.append(v)
+
+                        new_dict.setdefault(v,[]).append(k)
+                    else:
+                        new_dict.setdefault(v,[]).append(k)
+                        
+                
+                print(new_dict)
+                #计算哪位玩家被投次数最多,被淘汰,并更改状态1->0
+                count = 0
+                for k,v in new_dict.items():
+                    number = len(v)
+                    if number > count:
+                        count = number
+                for k,v in new_dict.items():
+                    if len(v) == count:
+                        print('name:',k)
+                        dictionary[k]=0
+                        print(dictionary)
+
                     
-                    
-
-                # new_dict = {v:k for k,v in VoteDict.items()}
-            # if state not in VoteList:           
-            #     VoteList.append(state)
-            #     StatList = []
-            #     StatList.append(who)
             
-            
-                print (new_dict) 
-            
+                
 
-
-
-            # print(VoteDict)           
-
-        elif result == 'q':
-            pass
+        # elif result == 'q':
+        #     pass
 
 
     
     
-dictionary = {1:1,2:1,3:1}
+dictionary = {'1':'1','2':'1','3':'1'}
 VoteDict = {}
 
 for i in range(1,4):
